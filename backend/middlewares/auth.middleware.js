@@ -56,4 +56,33 @@ const authMiddlware = async (req,res,next) => {
     }
 }
 
-export {authMiddlware}
+const roleMiddleware = async (req,res,next)=>{
+    try {
+        const userId = req.user.id
+
+        const user = await db.user.findUnique({
+            where:{
+                id:userId
+            },
+            select:{
+                role:true
+            }
+        })
+
+        if(!user || user.role !== "ADMIN" ){
+            return res.status(403).json({
+                message: "Access denied admins only"
+            })
+        }
+
+        next();
+
+    } catch (error) {
+        console.log("Error within Role Middleware",error)
+        res.status(500).json({
+            message:"Error while checking user role"
+        })
+    }
+}
+
+export {authMiddlware , roleMiddleware}
