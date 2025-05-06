@@ -40,4 +40,16 @@ const pollBatchResults = async (tokens)=>{
     }
 }
 
-export {getJudge0LanguageId , submitBatch, pollBatchResults }
+const getLanguageName = (language) => {
+    const LANGUAGE_NAME = {
+        74: "TypeScript",
+        63: "JavaScript",
+        71: "Python",
+        62: "Java",
+    }
+
+    return LANGUAGE_NAME(language) || "Unknown"
+
+}
+
+export {getJudge0LanguageId , submitBatch, pollBatchResults, getLanguageName }
